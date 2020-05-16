@@ -4,13 +4,14 @@ import { Formik } from "formik";
 
 import { globalStyles } from "../styles/global.js";
 
-export default function ReviewForm(){
+export default function ReviewForm({ addReview }){
   return (
     <View style={globalStyles.container}>
       <Formik
         initialValues={{ title: "", body: "", rating: "" }}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={(values, actions) => {
+          actions.resetForm();
+          addReview(values);
         }}
       >
         {(props) => (
