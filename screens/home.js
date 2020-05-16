@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, Modal } from "react-native";
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  Button, 
+  FlatList, 
+  TouchableOpacity, 
+  Modal, 
+  TouchableWithoutFeedback, 
+  Keyboard 
+} from "react-native";
 import { globalStyles } from "../styles/global";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -17,22 +27,32 @@ export default function Home({ navigation }) {
     {title: "title third", rating: 1, body: "body of third title", key: "3"},
     {title: "title forth", rating: 3, body: "body of forth title", key: "4"},
     {title: "title fifth", rating: 2, body: "body of fifth title", key: "5"}
-  ])
+  ]);
+
+  const addReview = (review) => {
+    review.key = Math.random().toString();
+    setReviews((currentReviews) => {
+      return [ review, ...currentReviews ]
+    });
+    setModalOpen(false);
+  };
 
   return(
     <View style={globalStyles.container}>
       {/*<Text style={globalStyles.titleText}>Hello from home</Text>
       <Button title="go to review dets" onPress={pressHandler} />*/}
       <Modal visible={modalOpen} animationType="slide">
-        <View style={styles.modalContant}>
-          <MaterialIcons 
-            name="close"
-            size={24}
-            style={{ ...styles.modalToggle, ...styles.modalClose }}
-            onPress={() => setModalOpen(false)}
-          />
-          <ReviewForm />
-        </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
+          <View style={styles.modalContant}>
+            <MaterialIcons 
+              name="close"
+              size={24}
+              style={{ ...styles.modalToggle, ...styles.modalClose }}
+              onPress={() => setModalOpen(false)}
+            />
+            <ReviewForm addReview={addReview} />
+          </View>
+        </TouchableWithoutFeedback>
       </Modal>
       <MaterialIcons 
         name="add"
